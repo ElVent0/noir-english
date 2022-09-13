@@ -1,0 +1,32 @@
+$pure-white: rgb(255, 255, 255);
+$transparent-white: rgba(255, 255, 255, 0.1);
+$grey-text: #6f6f6f;
+$pure-violet: #5d6ffe;
+$pure-green: #79ff76;
+$pure-red: #ff8181;
+$grey-white: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 100%);
+$dark-bg: linear-gradient(90.98deg, #5c70fe 0.78%, #6225ff 99.1%);
+$dark-bg-item: linear-gradient(
+  180deg,
+  rgba(98, 46, 255, 0.8) 0%,
+  rgba(92, 111, 254, 0.8) 99.62%
+);
+$light-bg: linear-gradient(90.98deg, #f9f8ff 0.78%, #f3f0ff 99.1%);
+$light-bg-item: linear-gradient(
+  180deg,
+  rgba(255, 255, 255, 0.21) 0%,
+  rgba(255, 255, 255, 0.09) 99.62%
+);
+
+.hidden {
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  border: 0;
+  padding: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  margin: -1px;
+}
