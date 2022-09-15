@@ -16,12 +16,25 @@ module.exports = {
   //     open: true,
   //     hot: true,
   //   },
-  entry: ["@babel/polyfill", path.resolve(__dirname, "src", "index.js")],
+  entry: {
+    babel: "@babel/polyfill",
+    // path.resolve(__dirname, "src", "index.js"),
+    // path.resolve(__dirname, "src", "sign-in.js"),
+    // path.resolve(__dirname, "src", "main.js"),
+    // path.resolve(__dirname, "src", "game.js"),
+    index: path.resolve(__dirname, "src", "index.js"),
+    signin: path.resolve(__dirname, "src", "signin.js"),
+    main: path.resolve(__dirname, "src", "main.js"),
+    game: path.resolve(__dirname, "src", "game.js"),
+  },
   output: {
     path: path.resolve(__dirname, "dist"),
     clean: true,
-    filename: "index.[contenthash].js",
+    filename: "[name].[contenthash].js",
     assetModuleFilename: "assets/[name][ext]",
+  },
+  optimization: {
+    runtimeChunk: "single",
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -31,6 +44,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: "main.html",
       template: path.resolve(__dirname, "src", "main.html"),
+    }),
+    new HtmlWebpackPlugin({
+      filename: "game.html",
+      template: path.resolve(__dirname, "src", "game.html"),
     }),
     new MiniCssExtractPlugin({
       filename: "index.[contenthash].css",

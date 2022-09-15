@@ -1,0 +1,135 @@
+.main {
+  background: $dark-bg;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  padding: 46px 0 0 0;
+  margin-bottom: auto;
+  transition: 0.3s filter;
+  @media screen and (min-width: 768px) {
+    height: calc(100vh - 166px);
+    align-items: center;
+  }
+}
+
+.main__list {
+  width: 80%;
+  max-width: 320px;
+  @media screen and (min-width: 768px) {
+    width: 90%;
+    max-width: 680px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    // height: calc(100vh - 166px);
+  }
+  @media screen and (min-width: 1250px) {
+    width: 90%;
+    max-width: 1040px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+.main__item {
+  height: 180px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.21) 0%,
+    rgba(255, 255, 255, 0.09) 99.62%
+  );
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  margin-bottom: 30px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+  @media screen and (min-width: 768px) {
+    margin: 0;
+    width: 80%;
+    max-width: 320px;
+  }
+}
+.main__text-content {
+  display: block;
+  padding: 24px 30px 26px 30px;
+  margin-bottom: auto;
+  height: 120px;
+}
+.main__icon {
+  margin-right: 8px;
+  &--first {
+    width: 15.45px;
+    height: 20px;
+  }
+  &--second {
+    width: 20px;
+    height: 20px;
+  }
+  &--third {
+    width: 22.3px;
+    height: 20px;
+    margin-right: 5px;
+  }
+}
+
+.main__title {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  margin-bottom: 10px;
+}
+.main__paragraph {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 17px;
+  width: 200px;
+}
+.main__buttons {
+  gap: 6%;
+  padding: 12px 30px;
+  background: $transparent-white;
+  display: flex;
+  border-radius: 0 0 10px 10px;
+  margin-top: auto;
+}
+.main__button {
+  width: 47%;
+  height: 36px;
+  font-size: 16px;
+  line-height: 20px;
+  color: $grey-text;
+  background-color: $pure-white;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s background-color;
+  &:hover,
+  &:focus {
+    background-color: $hovered-white;
+  }
+  //   outline: none;
+  //   display: block;
+  //   box-sizing: border-box;
+}
+.main__icon-small {
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+}
+.main__button-text {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  position: relative;
+  top: 1px;
+}

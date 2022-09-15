@@ -1,0 +1,70 @@
+.header {
+  background: $dark-bg;
+  height: 76px;
+  padding-top: 40px;
+  transition: 0.3s filter;
+}
+.header__content {
+  width: 80%;
+  max-width: 320px;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  @media screen and (min-width: 768px) {
+    width: 80%;
+    max-width: 2000px;
+  }
+}
+.header__icon {
+  width: 36px;
+  height: 36px;
+  margin-right: 10px;
+}
+
+.header__profile {
+  display: flex;
+  cursor: pointer;
+}
+
+.header__text {
+  padding-top: 4px;
+}
+.header__name {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  margin-bottom: 3px;
+}
+.header__level {
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 16px;
+}
+.header__number {
+  font-weight: 400;
+}
+.header__toggle {
+  margin-left: auto;
+  width: 48px;
+  height: 24px;
+  background: $pure-white;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  padding: 2px 4px;
+  cursor: pointer;
+}
+.header__dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: $pure-violet;
+}
+
+.header__toggle--light {
+  // background: ;
+}
+
+.header__toggle--light {
+  margin-left: auto;
+  // background: ;
+}

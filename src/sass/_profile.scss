@@ -1,0 +1,128 @@
+.profile {
+  position: fixed;
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
+  // background: $dark-bg;
+  // background: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.deleted {
+  display: none;
+}
+
+.backdrop {
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+.profile__background {
+  background: $dark-bg;
+  width: 80%;
+  max-width: 320px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+
+.profile__content {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.21) 0%,
+    rgba(255, 255, 255, 0.09) 99.62%
+  );
+  border-radius: 10px;
+  padding: 60px 30px 30px 30px;
+  position: relative;
+}
+.profile__icon-small {
+  width: 30px;
+  height: 42px;
+  margin-bottom: 14px;
+}
+.profile__name {
+  margin-bottom: 14px;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 17px;
+  & > .bold {
+    font-size: 12px;
+  }
+}
+.profile__paragraph {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 17px;
+  margin-bottom: 10px;
+  &:nth-child(6) {
+    margin-bottom: 0;
+  }
+}
+.bold {
+  font-weight: 400;
+}
+.logout__paragraph {
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 20px;
+  text-decoration: underline;
+  margin-top: 24px;
+}
+
+.profile__close {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  transition: 0.3s background-color;
+  cursor: pointer;
+  &:hover,
+  &:focus {
+    background-color: $transparent-white;
+  }
+}
+
+.profile__close-icon {
+  width: 20px;
+  height: 20px;
+  fill: $pure-white;
+}
+
+.dot-move-forvard {
+  position: relative;
+  left: 20px;
+  animation: dotMoveForvard 0.3s linear;
+}
+
+.dot-move-back {
+  position: relative;
+  left: 0px;
+  animation: dotMoveBack 0.3s linear;
+}
+
+@keyframes dotMoveForvard {
+  0% {
+    left: 0px;
+  }
+
+  100% {
+    left: 20px;
+  }
+}
+
+@keyframes dotMoveBack {
+  0% {
+    left: 20px;
+  }
+
+  100% {
+    left: 0px;
+  }
+}
