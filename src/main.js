@@ -154,7 +154,7 @@ function renderQuestion() {
 
 function onTimeOut() {
   document.querySelector("[data-correct]").classList.add("game__answer--green");
-  document.querySelector("[data-correct]").classList.add("unactive");
+  document.querySelector(".game__list").classList.add("unactive");
   a = setTimeout(renderQuestion, 3000);
 }
 
