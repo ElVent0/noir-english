@@ -72,7 +72,10 @@
   font-size: 14px;
   line-height: 17px;
 }
-
+.game__new-words-item {
+  margin-bottom: 5px;
+  font-size: 13px;
+}
 .game__get-ready {
   font-weight: 700;
   font-size: 24px;
@@ -228,7 +231,7 @@
   font-weight: 200;
   font-size: 18px;
   line-height: 22px;
-  color: $grey-text;
+  color: $hovered-white;
   opacity: 0.6;
 }
 .text-red {

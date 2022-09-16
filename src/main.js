@@ -1,4 +1,5 @@
 import "./main.html";
+import wordsArray from "./words.json";
 
 const profileEl = document.querySelector(".header__profile");
 const closeProfileEl = document.querySelector(".profile__close");
@@ -95,9 +96,89 @@ let a;
 let b;
 let timer;
 let correctAnswersNumber = 0;
-
-function renderQuestion() {
+let newWords = [];
+let newDescriptions = [];
+let descriptionNumber = -1;
+let description = null;
+async function renderQuestion() {
   counter += 1;
+
+  let resultWord = null;
+  let resultWordTwo = null;
+  let resultWordThree = null;
+  let resultWordFour = null;
+  let resultDescription = null;
+  while (true) {
+    try {
+      const number = (Math.random() * (wordsArray.length - 1 - 0) + 0).toFixed(
+        0
+      );
+      const numberTwo = (
+        Math.random() * (wordsArray.length - 1 - 0) +
+        0
+      ).toFixed(0);
+      const numberThree = (
+        Math.random() * (wordsArray.length - 1 - 0) +
+        0
+      ).toFixed(0);
+      const numberFour = (
+        Math.random() * (wordsArray.length - 1 - 0) +
+        0
+      ).toFixed(0);
+      resultWord = wordsArray[number];
+      resultWordTwo = wordsArray[numberTwo];
+      resultWordThree = wordsArray[numberThree];
+      resultWordFour = wordsArray[numberFour];
+      console.log(`Випадкове слово: ${resultWord}`);
+      resultDescription = await fetchData(resultWord);
+      console.log(
+        `Дані по випадковому слову: ${resultDescription[0].meanings[0].definitions[0].definition}`
+      );
+      break;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  console.log(
+    "Done",
+    resultWord[0],
+    "-",
+    resultDescription[0].meanings[0].definitions[0].definition
+  );
+
+  const arrayRandom = [];
+  arrayRandom.push(resultWord);
+  arrayRandom.push(resultWordTwo);
+  arrayRandom.push(resultWordThree);
+  arrayRandom.push(resultWordFour);
+
+  function makeRandomArr(a, b) {
+    return Math.random() - 0.5;
+  }
+
+  arrayRandom.sort(makeRandomArr);
+
+  console.log(arrayRandom);
+  const options = arrayRandom
+    .map((item) => {
+      console.log(resultWord);
+      console.log(item);
+      if (resultWord === item) {
+        return `<li class="game__answer" data-correct>${item}</li>`;
+      }
+      if (resultWord !== item) {
+        return `<li class="game__answer">${item}</li>`;
+      }
+    })
+    .join("");
+  console.log(options);
+  description = resultDescription[0].meanings[0].definitions[0].definition;
+  // const options = `
+  // <li class="game__answer" data-correct>Word</li>
+  //             <li class="game__answer">Word</li>
+  //             <li class="game__answer">Word</li>
+  //             <li class="game__answer">Word</li>
+  // `;
   const markup = `
   <section class="game">
       <div class="game__container">
@@ -108,15 +189,12 @@ function renderQuestion() {
         <div class="game__content">
           <div class="game__top-content">
             <p class="game__question">
-              There are a few words will be here to describe word
+              ${description}
             </p>
           </div>
           <div class="game__bottom-content">
             <ul class="game__list">
-              <li class="game__answer" data-correct>Word</li>
-              <li class="game__answer">Word</li>
-              <li class="game__answer">Word</li>
-              <li class="game__answer">Word</li>
+              ${options}
             </ul>
           </div>
         </div>
@@ -138,8 +216,12 @@ function renderQuestion() {
       !event.target.classList.contains("game__list")
     ) {
       event.target.classList.add("game__answer--red");
+      document
+        .querySelector("[data-correct]")
+        .classList.add("game__answer--green");
       event.currentTarget.classList.add("unactive");
-      console.log(777);
+      newWords.push(document.querySelector("[data-correct]").textContent);
+      newDescriptions.push(description);
       clearTimeout(timer);
       b = setTimeout(renderQuestion, 3000);
     }
@@ -152,8 +234,18 @@ function renderQuestion() {
   }
 }
 
+async function fetchData(randomWord) {
+  const randomJson = await fetch(
+    `https://api.dictionaryapi.dev/api/v2/entries/en/${randomWord}`
+  );
+  return randomJson.json();
+}
+
 function onTimeOut() {
   document.querySelector("[data-correct]").classList.add("game__answer--green");
+  newWords.push(document.querySelector("[data-correct]").textContent);
+  newDescriptions.push(description);
+  description = null;
   document.querySelector(".game__list").classList.add("unactive");
   a = setTimeout(renderQuestion, 3000);
 }
@@ -177,6 +269,16 @@ function renderResult() {
     ratingUpdate = `<span class="text-red">- 7</span>`;
   }
   const currentRating = 123;
+  console.log(newWords);
+  const newWordsForList = newWords
+    .map((item) => {
+      descriptionNumber += 1;
+      return `
+    <li class="game__new-words-item"><b>${item}</b> - ${newDescriptions[descriptionNumber]}</li>
+    `;
+    })
+    .join("");
+  descriptionNumber = -1;
   const markup = `
   <section class="game">
       <div class="game__container">
@@ -188,7 +290,7 @@ function renderResult() {
       </div>
       <div class="game__new-words">
           <p class="game__paragraph-new-words">New words:</p>
-          <ul class="game__new-words-list">Тут будуть нові слова</ul>
+          <ul class="game__new-words-list">${newWordsForList}</ul>
         </div>
       </div>
       
@@ -209,6 +311,8 @@ function renderResult() {
   // Звідси можна забрати кількість правильних відповідей - correctAnswersNumber
   correctAnswersNumber = 0;
   bodyEl.insertAdjacentHTML("beforeend", markup);
+  newWords = [];
+  newDescriptions = [];
   document
     .querySelector(".game__finish-button")
     .addEventListener("click", finishGame);
