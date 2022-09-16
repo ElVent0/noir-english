@@ -1,0 +1,89 @@
+.header__toggle.light-ui__toggle {
+  background: #5d6ffe;
+}
+.header__dot.light-ui__dot {
+  background: $pure-white;
+}
+
+.sign-in.light-ui {
+  background: $light-bg;
+}
+
+.profile__background.light-ui {
+  background: $light-bg;
+}
+
+.main.light-ui {
+  background: $light-bg;
+}
+
+.header.light-ui {
+  background: $light-bg;
+  color: $grey-text;
+}
+
+.footer.light-ui {
+  background: $light-bg;
+  color: $grey-text;
+  fill: $grey-text;
+}
+
+.footer__icon-github.light-ui {
+  fill: #5d6ffe;
+}
+
+.main__item.light-ui__item {
+  background: linear-gradient(
+    180deg,
+    rgba(98, 46, 255, 0.8) 0%,
+    rgba(92, 111, 254, 0.8) 99.62%
+  );
+}
+
+body.light-ui {
+  background: $pure-white;
+}
+.profile.light-ui {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.profile__content.light-ui__item {
+  background: linear-gradient(
+    180deg,
+    rgba(98, 46, 255, 0.8) 0%,
+    rgba(92, 111, 254, 0.8) 99.62%
+  );
+}
+
+.game__content.light-ui__item {
+  background: linear-gradient(
+    180deg,
+    rgba(98, 46, 255, 0.8) 0%,
+    rgba(92, 111, 254, 0.8) 99.62%
+  );
+}
+
+.game__content.light-ui__item {
+  background: linear-gradient(
+    180deg,
+    rgba(98, 46, 255, 0.8) 0%,
+    rgba(92, 111, 254, 0.8) 99.62%
+  );
+}
+
+.game__counter.light-ui__item {
+  color: $grey-text;
+}
+
+.game__finish-button.light-ui__item {
+  background: linear-gradient(
+    180deg,
+    rgba(98, 46, 255, 0.8) 0%,
+    rgba(92, 111, 254, 0.8) 99.62%
+  );
+  color: #fff;
+}
+
+.game__button-text.light-ui__item {
+  color: #fff;
+}

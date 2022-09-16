@@ -25,7 +25,6 @@ module.exports = {
     index: path.resolve(__dirname, "src", "index.js"),
     signin: path.resolve(__dirname, "src", "signin.js"),
     main: path.resolve(__dirname, "src", "main.js"),
-    game: path.resolve(__dirname, "src", "game.js"),
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -44,10 +43,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: "main.html",
       template: path.resolve(__dirname, "src", "main.html"),
-    }),
-    new HtmlWebpackPlugin({
-      filename: "game.html",
-      template: path.resolve(__dirname, "src", "game.html"),
     }),
     new MiniCssExtractPlugin({
       filename: "index.[contenthash].css",

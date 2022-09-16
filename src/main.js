@@ -29,13 +29,76 @@ function onProfileClose() {
 
 toggleEl.addEventListener("click", onToggle);
 
-function onToggle() {
-  if (dotEl.classList.contains("dot-move-back")) {
+checkTheme();
+function checkTheme() {
+  if (localStorage.getItem("light-theme") === "true") {
     dotEl.classList.add("dot-move-forvard");
     dotEl.classList.remove("dot-move-back");
+    toggleEl.classList.add("light-ui__toggle");
+    dotEl.classList.add("light-ui__dot");
+    document.querySelector(".profile__background").classList.add("light-ui");
+    document.querySelector(".main").classList.add("light-ui");
+    document.querySelector(".header").classList.add("light-ui");
+    document.querySelector(".footer").classList.add("light-ui");
+    document.querySelector(".footer__icon-github").classList.add("light-ui");
+    document.querySelector(".main__item").classList.add("light-ui__item");
+    document.querySelector("body").classList.add("light-ui");
+    document
+      .querySelectorAll(".main__item")
+      .forEach((elem) => elem.classList.add("light-ui__item"));
+    document.querySelector(".profile").classList.add("light-ui");
+    document.querySelector(".profile__content").classList.add("light-ui__item");
+  }
+}
+
+// function checkGameTheme() {
+//   if (localStorage.getItem("light-theme") === "true") {
+//     document.querySelector("body").classList.add("light-ui");
+//     document.querySelector("game__top-content").classList.add("light-ui-item");
+//     document
+//       .querySelector("game__bottom-content")
+//       .classList.add("light-ui-item");
+//   }
+// }
+
+function onToggle() {
+  if (dotEl.classList.contains("dot-move-back")) {
+    localStorage.setItem("light-theme", true);
+    dotEl.classList.add("dot-move-forvard");
+    dotEl.classList.remove("dot-move-back");
+
+    toggleEl.classList.add("light-ui__toggle");
+    dotEl.classList.add("light-ui__dot");
+
+    document.querySelector(".profile__background").classList.add("light-ui");
+    document.querySelector(".main").classList.add("light-ui");
+    document.querySelector(".header").classList.add("light-ui");
+    document.querySelector(".footer").classList.add("light-ui");
+    document.querySelector(".footer__icon-github").classList.add("light-ui");
+    document.querySelector(".main__item").classList.add("light-ui__item");
+    document.querySelector("body").classList.add("light-ui");
+    document
+      .querySelectorAll(".main__item")
+      .forEach((elem) => elem.classList.add("light-ui__item"));
+    document.querySelector(".profile").classList.add("light-ui");
+    document.querySelector(".profile__content").classList.add("light-ui__item");
   } else if (dotEl.classList.contains("dot-move-forvard")) {
+    localStorage.setItem("light-theme", false);
     dotEl.classList.add("dot-move-back");
     dotEl.classList.remove("dot-move-forvard");
+
+    toggleEl.classList.remove("light-ui__toggle");
+    dotEl.classList.remove("light-ui__dot");
+    document.querySelector(".profile__background").classList.remove("light-ui");
+    document.querySelector(".main").classList.remove("light-ui");
+    document.querySelector(".header").classList.remove("light-ui");
+    document.querySelector(".footer").classList.remove("light-ui");
+    document.querySelector(".footer__icon-github").classList.remove("light-ui");
+    document
+      .querySelectorAll(".main__item")
+      .forEach((elem) => elem.classList.remove("light-ui__item"));
+    document.querySelector("body").classList.remove("light-ui");
+    document.querySelector(".profile").classList.remove("light-ui");
   } else {
     dotEl.classList.add("dot-move-forvard");
   }
@@ -65,10 +128,18 @@ function onMainHide() {
   document.querySelector(".header").classList.add("deleted");
   document.querySelector(".main").classList.add("deleted");
   document.querySelector(".footer").classList.add("deleted");
-  renderGame();
+  // if (e.target.classList.contains("game-first")) {
+  renderGameFirst();
+  // }
+  // if (e.target.hasAttribute("data-game-second")) {
+  //   renderGameFirst();
+  // }
+  // if (e.target.hasAttribute("data-game-third")) {
+  //   renderGameFirst();
+  // }
 }
 
-function renderGame() {
+function renderGameFirst() {
   const markup = `
   <section class="game">
   <div class="game__container">
@@ -81,7 +152,14 @@ function renderGame() {
       </div>
     </section>
   `;
+  // }
+
   bodyEl.insertAdjacentHTML("beforeend", markup);
+  // checkGameTheme();
+  // onToggle();
+  if (localStorage.getItem("light-theme") === "true") {
+    document.querySelector(".game__content").classList.add("light-ui__item");
+  }
   setTimeout(() => {
     document.querySelector(".game__entry-timer").textContent = "2";
   }, 1000);
@@ -203,6 +281,10 @@ async function renderQuestion() {
   `;
   document.querySelector(".game").remove();
   bodyEl.insertAdjacentHTML("beforeend", markup);
+  if (localStorage.getItem("light-theme") === "true") {
+    document.querySelector(".game__content").classList.add("light-ui__item");
+    document.querySelector(".game__counter").classList.add("light-ui__item");
+  }
   timer = setTimeout(onTimeOut, 12000);
   document.querySelector(".game__list").addEventListener("click", (event) => {
     if (event.target.hasAttribute("data-correct")) {
@@ -294,16 +376,28 @@ function renderResult() {
         </div>
       </div>
       
-      <button class="game__finish-button" data-game-first>
-              <svg class="main__icon-small">
-                <use
-                  href="assets/icons.svg#home"
-                  width="25.13"
-                  height="20"
-                ></use>
-              </svg>
-              <p class="main__button-text">HOME</p>
-            </button>
+      <div class="game__finish-buttons">
+        <button class="game__finish-button" data-game-first>
+            <svg class="main__icon-small">
+              <use
+                href="assets/icons.svg#home"
+                width="25.13"
+                height="20"
+              ></use>
+            </svg>
+            <p class="game__button-text">HOME</p>
+        </button>
+        <button class="game__finish-button" data-game-first data-again>
+            <svg class="main__icon-small">
+              <use
+                href="assets/icons.svg#home"
+                width="25.13"
+                height="20"
+              ></use>
+            </svg>
+            <p class="game__button-text ">AGAIN</p>
+        </button>
+      </div>
       </div>
     </section>
   `;
@@ -311,11 +405,30 @@ function renderResult() {
   // Звідси можна забрати кількість правильних відповідей - correctAnswersNumber
   correctAnswersNumber = 0;
   bodyEl.insertAdjacentHTML("beforeend", markup);
+  document.querySelector(".game").classList.add("game--media");
+  if (localStorage.getItem("light-theme") === "true") {
+    document.querySelector(".game__content").classList.add("light-ui__item");
+    document
+      .querySelector(".game__finish-button")
+      .classList.add("light-ui__item");
+    document
+      .querySelector(".game__button-text")
+      .classList.add("light-ui__item");
+  }
   newWords = [];
   newDescriptions = [];
   document
     .querySelector(".game__finish-button")
     .addEventListener("click", finishGame);
+  document.querySelector("[data-again]").addEventListener("click", playAgain);
+}
+
+function playAgain() {
+  finishGame();
+  document.querySelector(".header").classList.add("deleted");
+  document.querySelector(".main").classList.add("deleted");
+  document.querySelector(".footer").classList.add("deleted");
+  renderGameFirst();
 }
 
 function finishGame() {
