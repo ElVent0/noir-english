@@ -8,30 +8,32 @@
   </head>
   <body>
     <section class="sign-in">
-      <div class="sign-in__content" data-sign-in>
-        <a href="./main.html" color="white"
-          ><h1 class="sign-in-title">SIGN IN</h1></a
-        >
-        <form action="" class="sign-in-form" data-form-sign-in>
-          <input type="text" class="sign-in__input" placeholder="email" />
-          <input type="text" class="sign-in__input" placeholder="password" />
+      <div class="sign-in__container" data-sign-in>
+        <div class="sign-in__content">
+          <h1 class="sign-in-title">SIGN IN</h1>
+          <form action="" class="sign-in-form" data-form-sign-in>
+            <input type="text" class="sign-in__input" placeholder="email" />
+            <input type="text" class="sign-in__input" placeholder="password" />
 
-          <button class="sign-in__button" type="submit">SIGN IN</button>
-        </form>
-        <p class="sign-in__paragraph">
-          New to NoirEnglish?<br />
-          <span class="sign-in__sign-up">Sign up now</span>
-        </p>
+            <button class="sign-in__button" type="submit">SIGN IN</button>
+          </form>
+          <p class="sign-in__paragraph">
+            New to NoirEnglish?<br />
+            <span class="sign-in__sign-up">Sign up now</span>
+          </p>
+        </div>
+        <a href="./main.html" class="sign-in__guest">PLAY AS GUEST</a>
       </div>
-
-      <div class="sign-in__content hidden" data-sign-up>
-        <h1 class="sign-in-title">SIGN UP</h1>
-        <form action="" class="sign-in-form" data-form-sign-up>
-          <input type="text" class="sign-in__input" placeholder="email" />
-          <input type="text" class="sign-in__input" placeholder="password" />
-          <button class="sign-in__button" type="submit">SIGN UP</button>
-        </form>
-        <p class="back__paragraph">Back</p>
+      <div class="sign-in__container deleted" data-sign-up>
+        <div class="sign-in__content">
+          <h1 class="sign-in-title">SIGN UP</h1>
+          <form action="" class="sign-in-form" data-form-sign-up>
+            <input type="text" class="sign-in__input" placeholder="email" />
+            <input type="text" class="sign-in__input" placeholder="password" />
+            <button class="sign-in__button" type="submit">SIGN UP</button>
+          </form>
+          <p class="back__paragraph">Back</p>
+        </div>
       </div>
     </section>
   </body>

@@ -9,6 +9,46 @@ const bodyEl = document.querySelector("body");
 
 profileEl.addEventListener("click", onProfileOpen);
 
+let userGuest;
+let nickname;
+let rating;
+let level;
+let levelRating;
+let ratingUpdateNumber;
+let currentGame = null;
+
+function getRandomName() {
+  const randomUserNumber = Math.floor(100000 + Math.random() * 900000);
+  return `guest_${randomUserNumber}`;
+}
+
+checkGuest();
+
+function checkGuest() {
+  if (!localStorage.getItem("guest")) {
+    const userData = {
+      nickname: getRandomName(),
+      rating: 100,
+      levelRating: 100,
+      level: 1,
+    };
+    localStorage.setItem("guest", JSON.stringify(userData));
+  }
+  userGuest = localStorage.getItem("guest");
+  nickname = JSON.parse(userGuest).nickname;
+  rating = JSON.parse(userGuest).rating;
+  level = JSON.parse(userGuest).level;
+  levelRating = JSON.parse(userGuest).levelRating;
+  ratingUpdateNumber = JSON.parse(userGuest).levelRating;
+  document.querySelector(".header__name").textContent = nickname;
+  document.querySelector(".header__number").textContent = level;
+  document.querySelector(".profile__nickname").textContent = nickname;
+  document.querySelector(".profile__level").textContent = level;
+  document.querySelector(".profile__rating").textContent = rating;
+
+  console.log(JSON.parse(userGuest).nickname);
+}
+
 function onProfileOpen() {
   document.querySelector(".header").classList.add("backdrop");
   document.querySelector(".main").classList.add("backdrop");
@@ -114,30 +154,44 @@ function onProfileCloseByBackdrop(e) {
   }
 }
 
-document
-  .querySelector("[data-game-first]")
-  .addEventListener("click", onMainHide);
-document
-  .querySelector("[data-game-second]")
-  .addEventListener("click", onMainHide);
-document
-  .querySelector("[data-game-third]")
-  .addEventListener("click", onMainHide);
+document.querySelectorAll("[data-game-first]").forEach((item) => {
+  item.addEventListener("click", () => {
+    document.querySelector(".header").classList.add("deleted");
+    document.querySelector(".main").classList.add("deleted");
+    document.querySelector(".footer").classList.add("deleted");
+    renderGameFirst();
+  });
+});
 
-function onMainHide() {
-  document.querySelector(".header").classList.add("deleted");
-  document.querySelector(".main").classList.add("deleted");
-  document.querySelector(".footer").classList.add("deleted");
-  // if (e.target.classList.contains("game-first")) {
-  renderGameFirst();
-  // }
-  // if (e.target.hasAttribute("data-game-second")) {
-  //   renderGameFirst();
-  // }
-  // if (e.target.hasAttribute("data-game-third")) {
-  //   renderGameFirst();
-  // }
-}
+// document.querySelectorAll("[data-game-second]").forEach((item) => {
+//   item.addEventListener("click", (e) => {
+//     document.querySelector(".header").classList.add("deleted");
+//     document.querySelector(".main").classList.add("deleted");
+//     document.querySelector(".footer").classList.add("deleted");
+//     // if (e.target.classList.contains("game-first")) {
+//     //   renderGameFirst();
+//     // }
+//   });
+// });
+
+// document.querySelectorAll("[data-game-third]").forEach((item) => {
+//   item.addEventListener("click", (e) => {
+//     document.querySelector(".header").classList.add("deleted");
+//     document.querySelector(".main").classList.add("deleted");
+//     document.querySelector(".footer").classList.add("deleted");
+//     // if (e.target.classList.contains("game-first")) {
+//     //   renderGameFirst();
+//     // }
+//   });
+// });
+
+document.querySelector("[data-rating]").addEventListener("click", () => {
+  currentGame = "rating";
+});
+
+// function onMainHide(e) {
+
+// }
 
 function renderGameFirst() {
   const markup = `
@@ -339,36 +393,50 @@ function renderResult() {
   let ratingUpdate;
   if (correctAnswersNumber === 1) {
     ratingUpdate = `<span class="text-red">- 5</span>`;
+    ratingUpdateNumber = -5;
   } else if (correctAnswersNumber === 2) {
     ratingUpdate = `<span class="text-grey">+ 0</span>`;
+    ratingUpdateNumber = +0;
   } else if (correctAnswersNumber === 3) {
     ratingUpdate = `<span class="text-green">+ 2</span>`;
+    ratingUpdateNumber = +2;
   } else if (correctAnswersNumber === 4) {
     ratingUpdate = `<span class="text-green">+ 5</span>`;
+    ratingUpdateNumber = +5;
   } else if (correctAnswersNumber === 5) {
     ratingUpdate = `<span class="text-green">+ 10</span>`;
+    ratingUpdateNumber = +1;
   } else if (correctAnswersNumber === 0) {
     ratingUpdate = `<span class="text-red">- 7</span>`;
+    ratingUpdateNumber = -7;
   }
   const currentRating = 123;
   console.log(newWords);
-  const newWordsForList = newWords
-    .map((item) => {
-      descriptionNumber += 1;
-      return `
+
+  let newWordsForList;
+  if (newWords.length === 0) {
+    newWordsForList = "There are no new words. All your answers are correct";
+  } else {
+    newWordsForList = newWords
+      .map((item) => {
+        descriptionNumber += 1;
+        return `
     <li class="game__new-words-item"><b>${item}</b> - ${newDescriptions[descriptionNumber]}</li>
     `;
-    })
-    .join("");
+      })
+      .join("");
+  }
   descriptionNumber = -1;
-  const markup = `
+  let markup;
+  if (currentGame === "rating") {
+    markup = `
   <section class="game">
       <div class="game__container">
       <div class="game__content">
       <div class="game__result">
         <p class="game__paragraph-result">Your score:</p>
         <p class="game__number-result">${correctAnswersNumber}</p>
-        <p class="game__paragraph-rating">Your rating: ${currentRating} ${ratingUpdate}</p>
+        <p class="game__paragraph-rating">Your rating: ${rating} ${ratingUpdate}</p>
       </div>
       <div class="game__new-words">
           <p class="game__paragraph-new-words">New words:</p>
@@ -390,8 +458,8 @@ function renderResult() {
         <button class="game__finish-button" data-game-first data-again>
             <svg class="main__icon-small">
               <use
-                href="assets/icons.svg#home"
-                width="25.13"
+                href="assets/icons.svg#repeat"
+                width="17.78"
                 height="20"
               ></use>
             </svg>
@@ -401,7 +469,77 @@ function renderResult() {
       </div>
     </section>
   `;
+  } else {
+    markup = `
+  <section class="game">
+      <div class="game__container">
+      <div class="game__content">
+      <div class="game__result">
+        <p class="game__paragraph-result">Your score:</p>
+        <p class="game__number-result">${correctAnswersNumber}</p>
+        </div>
+      <div class="game__new-words">
+          <p class="game__paragraph-new-words">New words:</p>
+          <ul class="game__new-words-list">${newWordsForList}</ul>
+        </div>
+      </div>
+      
+      <div class="game__finish-buttons">
+        <button class="game__finish-button" data-game-first>
+            <svg class="main__icon-small">
+              <use
+                href="assets/icons.svg#home"
+                width="25.13"
+                height="20"
+              ></use>
+            </svg>
+            <p class="game__button-text">HOME</p>
+        </button>
+        <button class="game__finish-button" data-game-first data-again>
+            <svg class="main__icon-small">
+              <use
+                href="assets/icons.svg#repeat"
+                width="17.78"
+                height="20"
+              ></use>
+            </svg>
+            <p class="game__button-text ">AGAIN</p>
+        </button>
+      </div>
+      </div>
+    </section>
+  `;
+  }
   document.querySelector(".game").remove();
+
+  if (currentGame === "rating") {
+    function newLevelRating() {
+      if (ratingUpdateNumber > 0) {
+        return levelRating + ratingUpdateNumber;
+      } else {
+        return JSON.parse(localStorage.getItem("guest")).levelRating;
+      }
+    }
+    const newUserData = {
+      nickname,
+      // rating: rating + ratingUpdateNumber,
+      rating:
+        rating + ratingUpdateNumber <= 0 ? 0 : rating + ratingUpdateNumber,
+      levelRating: newLevelRating(),
+      level: levelCaculate(),
+    };
+    console.log("rating is: ", rating + ratingUpdateNumber);
+    console.log("ratingLevel is: ", newLevelRating());
+    console.log("new level is: ", levelCaculate());
+
+    level = levelCaculate();
+    rating = rating + ratingUpdateNumber <= 0 ? 0 : rating + ratingUpdateNumber;
+    document.querySelector(".profile__rating").textContent = rating;
+    document.querySelector(".profile__level").textContent = level;
+    document.querySelector(".header__number").textContent = level;
+    localStorage.setItem("guest", JSON.stringify(newUserData));
+  }
+
   // Звідси можна забрати кількість правильних відповідей - correctAnswersNumber
   correctAnswersNumber = 0;
   bodyEl.insertAdjacentHTML("beforeend", markup);
@@ -424,7 +562,10 @@ function renderResult() {
 }
 
 function playAgain() {
-  finishGame();
+  document.querySelector(".game").remove();
+  document.querySelector(".header").classList.remove("deleted");
+  document.querySelector(".main").classList.remove("deleted");
+  document.querySelector(".footer").classList.remove("deleted");
   document.querySelector(".header").classList.add("deleted");
   document.querySelector(".main").classList.add("deleted");
   document.querySelector(".footer").classList.add("deleted");
@@ -432,8 +573,13 @@ function playAgain() {
 }
 
 function finishGame() {
+  currentGame = null;
   document.querySelector(".game").remove();
   document.querySelector(".header").classList.remove("deleted");
   document.querySelector(".main").classList.remove("deleted");
   document.querySelector(".footer").classList.remove("deleted");
+}
+
+function levelCaculate() {
+  return Math.round(levelRating / 100);
 }

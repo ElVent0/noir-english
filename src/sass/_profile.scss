@@ -63,13 +63,27 @@
 .bold {
   font-weight: 400;
 }
-.logout__paragraph {
+.logout__link {
+  width: 100px;
+  height: 40px;
+  color: $pure-white;
   font-weight: 400;
   font-size: 18px;
   line-height: 20px;
   text-decoration: underline;
   margin-top: 24px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  &:hover,
+  &:focus {
+    color: $hovered-white;
+  }
 }
+
+// .logout__paragraph {
+
+// }
 
 .profile__close {
   position: absolute;
