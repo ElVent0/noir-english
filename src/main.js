@@ -16,6 +16,7 @@ let level;
 let levelRating;
 let ratingUpdateNumber;
 let currentGame = null;
+let currentGameNumber = null;
 
 function getRandomName() {
   const randomUserNumber = Math.floor(100000 + Math.random() * 900000);
@@ -159,41 +160,42 @@ document.querySelectorAll("[data-game-first]").forEach((item) => {
     document.querySelector(".header").classList.add("deleted");
     document.querySelector(".main").classList.add("deleted");
     document.querySelector(".footer").classList.add("deleted");
-    renderGameFirst();
+    currentGameNumber = 1;
+    renderGame();
   });
 });
 
-// document.querySelectorAll("[data-game-second]").forEach((item) => {
-//   item.addEventListener("click", (e) => {
-//     document.querySelector(".header").classList.add("deleted");
-//     document.querySelector(".main").classList.add("deleted");
-//     document.querySelector(".footer").classList.add("deleted");
-//     // if (e.target.classList.contains("game-first")) {
-//     //   renderGameFirst();
-//     // }
-//   });
-// });
+document.querySelectorAll("[data-game-second]").forEach((item) => {
+  item.addEventListener("click", () => {
+    document.querySelector(".header").classList.add("deleted");
+    document.querySelector(".main").classList.add("deleted");
+    document.querySelector(".footer").classList.add("deleted");
+    currentGameNumber = 2;
+    renderGame();
+  });
+});
 
-// document.querySelectorAll("[data-game-third]").forEach((item) => {
-//   item.addEventListener("click", (e) => {
-//     document.querySelector(".header").classList.add("deleted");
-//     document.querySelector(".main").classList.add("deleted");
-//     document.querySelector(".footer").classList.add("deleted");
-//     // if (e.target.classList.contains("game-first")) {
-//     //   renderGameFirst();
-//     // }
-//   });
-// });
+document.querySelectorAll("[data-game-third]").forEach((item) => {
+  item.addEventListener("click", () => {
+    document.querySelector(".header").classList.add("deleted");
+    document.querySelector(".main").classList.add("deleted");
+    document.querySelector(".footer").classList.add("deleted");
+    currentGameNumber = 3;
+    renderGame();
+  });
+});
 
-document.querySelector("[data-rating]").addEventListener("click", () => {
-  currentGame = "rating";
+document.querySelectorAll("[data-rating]").forEach((a) => {
+  a.addEventListener("click", () => {
+    currentGame = "rating";
+  });
 });
 
 // function onMainHide(e) {
 
 // }
 
-function renderGameFirst() {
+function renderGame() {
   const markup = `
   <section class="game">
   <div class="game__container">
@@ -232,6 +234,8 @@ let newWords = [];
 let newDescriptions = [];
 let descriptionNumber = -1;
 let description = null;
+let randomJson;
+
 async function renderQuestion() {
   counter += 1;
 
@@ -240,11 +244,10 @@ async function renderQuestion() {
   let resultWordThree = null;
   let resultWordFour = null;
   let resultDescription = null;
+
   while (true) {
     try {
-      const number = (Math.random() * (wordsArray.length - 1 - 0) + 0).toFixed(
-        0
-      );
+      let number = (Math.random() * (wordsArray.length - 1 - 0) + 0).toFixed(0);
       const numberTwo = (
         Math.random() * (wordsArray.length - 1 - 0) +
         0
@@ -263,6 +266,34 @@ async function renderQuestion() {
       resultWordFour = wordsArray[numberFour];
       console.log(`Випадкове слово: ${resultWord}`);
       resultDescription = await fetchData(resultWord);
+      if (currentGameNumber === 2) {
+        while (resultDescription[0].meanings[0].synonyms.length === 0) {
+          number = (Math.random() * (wordsArray.length - 1 - 0) + 0).toFixed(0);
+          resultWord = wordsArray[number];
+          resultDescription = await fetchData(resultWord);
+        }
+      } else if (currentGameNumber === 3) {
+        console.log(
+          "-----------------------------------------------",
+          // resultDescription[0].meanings[0].definitions[0].example,
+          // resultWord,
+          !resultDescription[0].meanings[0].definitions[0].example
+            .split(" ")
+            .includes(resultWord)
+
+          // resultDescription[0].meanings[0].definitions[0].example.indexOF(
+          //   resultWord
+          // ) === -1
+        );
+        while (
+          resultDescription[0].meanings[0].definitions[0].example.length === 0
+        ) {
+          console.log(999999999);
+          number = (Math.random() * (wordsArray.length - 1 - 0) + 0).toFixed(0);
+          resultWord = wordsArray[number];
+          resultDescription = await fetchData(resultWord);
+        }
+      }
       console.log(
         `Дані по випадковому слову: ${resultDescription[0].meanings[0].definitions[0].definition}`
       );
@@ -291,20 +322,86 @@ async function renderQuestion() {
   arrayRandom.sort(makeRandomArr);
 
   console.log(arrayRandom);
-  const options = arrayRandom
-    .map((item) => {
-      console.log(resultWord);
-      console.log(item);
-      if (resultWord === item) {
-        return `<li class="game__answer" data-correct>${item}</li>`;
+
+  // -------------------------------------------------
+  // --------- Питання для різних ігор----------------
+  // -------------------------------------------------
+  let options;
+  let description;
+
+  if (currentGameNumber === 1) {
+    description = resultDescription[0].meanings[0].definitions[0].definition;
+    options = arrayRandom
+      .map((item) => {
+        console.log(resultWord);
+        console.log(item);
+        if (resultWord === item) {
+          return `<li class="game__answer" data-correct>${item}</li>`;
+        }
+        if (resultWord !== item) {
+          return `<li class="game__answer">${item}</li>`;
+        }
+      })
+      .join("");
+  } else if (currentGameNumber === 2) {
+    let descriptionArray = resultDescription[0].meanings[0].synonyms;
+    description = descriptionArray
+      .slice(0, 4)
+      .map((a) => {
+        return `${a}, `;
+      })
+      .join("")
+      .slice(0, -2);
+    console.log(description);
+    options = arrayRandom
+      .map((item) => {
+        console.log(resultWord);
+        console.log(item);
+        if (resultWord === item) {
+          return `<li class="game__answer" data-correct>${item}</li>`;
+        }
+        if (resultWord !== item) {
+          return `<li class="game__answer">${item}</li>`;
+        }
+      })
+      .join("");
+  } else if (currentGameNumber === 3) {
+    let ourWord;
+    let resultDescriptionArray =
+      resultDescription[0].meanings[0].definitions[0].example.split(" ");
+    resultDescriptionArray.map((a) => {
+      if (
+        a.toLowerCase()[0] === resultWord.toLowerCase()[0] &&
+        a.toLowerCase()[1] === resultWord.toLowerCase()[1] &&
+        a.toLowerCase()[2] === resultWord.toLowerCase()[2]
+      ) {
+        ourWord = a;
       }
-      if (resultWord !== item) {
-        return `<li class="game__answer">${item}</li>`;
-      }
-    })
-    .join("");
-  console.log(options);
-  description = resultDescription[0].meanings[0].definitions[0].definition;
+    });
+    description =
+      resultDescription[0].meanings[0].definitions[0].example.replace(
+        ourWord,
+        "_____"
+      );
+    options = arrayRandom
+      .map((item) => {
+        console.log(resultWord);
+        console.log(item);
+        if (resultWord === item) {
+          return `<li class="game__answer" data-correct>${item}</li>`;
+        }
+        if (resultWord !== item) {
+          return `<li class="game__answer">${item}</li>`;
+        }
+      })
+      .join("");
+    console.log("description -----------", description);
+  }
+
+  // -------------------------------------------------
+  // -------------------------------------------------
+  // -------------------------------------------------
+
   // const options = `
   // <li class="game__answer" data-correct>Word</li>
   //             <li class="game__answer">Word</li>
@@ -357,7 +454,15 @@ async function renderQuestion() {
         .classList.add("game__answer--green");
       event.currentTarget.classList.add("unactive");
       newWords.push(document.querySelector("[data-correct]").textContent);
-      newDescriptions.push(description);
+
+      if (resultDescription[0].meanings[0].definitions[0].definition === null) {
+        newDescriptions.push(resultDescription[0].meanings[0].synonyms);
+      } else {
+        newDescriptions.push(
+          resultDescription[0].meanings[0].definitions[0].definition
+        );
+      }
+
       clearTimeout(timer);
       b = setTimeout(renderQuestion, 3000);
     }
@@ -371,7 +476,7 @@ async function renderQuestion() {
 }
 
 async function fetchData(randomWord) {
-  const randomJson = await fetch(
+  randomJson = await fetch(
     `https://api.dictionaryapi.dev/api/v2/entries/en/${randomWord}`
   );
   return randomJson.json();
@@ -511,7 +616,7 @@ function renderResult() {
   `;
   }
   document.querySelector(".game").remove();
-
+  console.log(111111111111111111111111111111111111111111, currentGame);
   if (currentGame === "rating") {
     function newLevelRating() {
       if (ratingUpdateNumber > 0) {
@@ -569,11 +674,12 @@ function playAgain() {
   document.querySelector(".header").classList.add("deleted");
   document.querySelector(".main").classList.add("deleted");
   document.querySelector(".footer").classList.add("deleted");
-  renderGameFirst();
+  renderGame();
 }
 
 function finishGame() {
   currentGame = null;
+  currentGameNumber = null;
   document.querySelector(".game").remove();
   document.querySelector(".header").classList.remove("deleted");
   document.querySelector(".main").classList.remove("deleted");
