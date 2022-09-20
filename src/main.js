@@ -1,5 +1,5 @@
 import "./main.html";
-import wordsArray from "./words.json";
+import wordsArray from "./data/words.json";
 
 const profileEl = document.querySelector(".header__profile");
 const closeProfileEl = document.querySelector(".profile__close");
@@ -46,8 +46,6 @@ function checkGuest() {
   document.querySelector(".profile__nickname").textContent = nickname;
   document.querySelector(".profile__level").textContent = level;
   document.querySelector(".profile__rating").textContent = rating;
-
-  console.log(JSON.parse(userGuest).nickname);
 }
 
 function onProfileOpen() {
@@ -91,16 +89,6 @@ function checkTheme() {
     document.querySelector(".profile__content").classList.add("light-ui__item");
   }
 }
-
-// function checkGameTheme() {
-//   if (localStorage.getItem("light-theme") === "true") {
-//     document.querySelector("body").classList.add("light-ui");
-//     document.querySelector("game__top-content").classList.add("light-ui-item");
-//     document
-//       .querySelector("game__bottom-content")
-//       .classList.add("light-ui-item");
-//   }
-// }
 
 function onToggle() {
   if (dotEl.classList.contains("dot-move-back")) {
@@ -191,10 +179,6 @@ document.querySelectorAll("[data-rating]").forEach((a) => {
   });
 });
 
-// function onMainHide(e) {
-
-// }
-
 function renderGame() {
   const markup = `
   <section class="game">
@@ -208,11 +192,9 @@ function renderGame() {
       </div>
     </section>
   `;
-  // }
 
   bodyEl.insertAdjacentHTML("beforeend", markup);
-  // checkGameTheme();
-  // onToggle();
+
   if (localStorage.getItem("light-theme") === "true") {
     document.querySelector(".game__content").classList.add("light-ui__item");
   }
@@ -264,7 +246,7 @@ async function renderQuestion() {
       resultWordTwo = wordsArray[numberTwo];
       resultWordThree = wordsArray[numberThree];
       resultWordFour = wordsArray[numberFour];
-      console.log(`Випадкове слово: ${resultWord}`);
+      // console.log(`Випадкове слово: ${resultWord}`);
       resultDescription = await fetchData(resultWord);
       if (currentGameNumber === 2) {
         while (resultDescription[0].meanings[0].synonyms.length === 0) {
@@ -273,41 +255,22 @@ async function renderQuestion() {
           resultDescription = await fetchData(resultWord);
         }
       } else if (currentGameNumber === 3) {
-        console.log(
-          "-----------------------------------------------",
-          // resultDescription[0].meanings[0].definitions[0].example,
-          // resultWord,
-          !resultDescription[0].meanings[0].definitions[0].example
-            .split(" ")
-            .includes(resultWord)
-
-          // resultDescription[0].meanings[0].definitions[0].example.indexOF(
-          //   resultWord
-          // ) === -1
-        );
         while (
           resultDescription[0].meanings[0].definitions[0].example.length === 0
         ) {
-          console.log(999999999);
           number = (Math.random() * (wordsArray.length - 1 - 0) + 0).toFixed(0);
           resultWord = wordsArray[number];
           resultDescription = await fetchData(resultWord);
         }
       }
-      console.log(
-        `Дані по випадковому слову: ${resultDescription[0].meanings[0].definitions[0].definition}`
-      );
+      // console.log(
+      //   `Дані по випадковому слову: ${resultDescription[0].meanings[0].definitions[0].definition}`
+      // );
       break;
     } catch (e) {
       console.log(e);
     }
   }
-  console.log(
-    "Done",
-    resultWord[0],
-    "-",
-    resultDescription[0].meanings[0].definitions[0].definition
-  );
 
   const arrayRandom = [];
   arrayRandom.push(resultWord);
@@ -321,7 +284,7 @@ async function renderQuestion() {
 
   arrayRandom.sort(makeRandomArr);
 
-  console.log(arrayRandom);
+  // console.log(arrayRandom);
 
   // -------------------------------------------------
   // --------- Питання для різних ігор----------------
@@ -333,8 +296,8 @@ async function renderQuestion() {
     description = resultDescription[0].meanings[0].definitions[0].definition;
     options = arrayRandom
       .map((item) => {
-        console.log(resultWord);
-        console.log(item);
+        // console.log(resultWord);
+        // console.log(item);
         if (resultWord === item) {
           return `<li class="game__answer" data-correct>${item}</li>`;
         }
@@ -352,11 +315,11 @@ async function renderQuestion() {
       })
       .join("")
       .slice(0, -2);
-    console.log(description);
+    // console.log(description);
     options = arrayRandom
       .map((item) => {
-        console.log(resultWord);
-        console.log(item);
+        // console.log(resultWord);
+        // console.log(item);
         if (resultWord === item) {
           return `<li class="game__answer" data-correct>${item}</li>`;
         }
@@ -385,8 +348,8 @@ async function renderQuestion() {
       );
     options = arrayRandom
       .map((item) => {
-        console.log(resultWord);
-        console.log(item);
+        // console.log(resultWord);
+        // console.log(item);
         if (resultWord === item) {
           return `<li class="game__answer" data-correct>${item}</li>`;
         }
@@ -395,19 +358,12 @@ async function renderQuestion() {
         }
       })
       .join("");
-    console.log("description -----------", description);
   }
 
   // -------------------------------------------------
   // -------------------------------------------------
   // -------------------------------------------------
 
-  // const options = `
-  // <li class="game__answer" data-correct>Word</li>
-  //             <li class="game__answer">Word</li>
-  //             <li class="game__answer">Word</li>
-  //             <li class="game__answer">Word</li>
-  // `;
   const markup = `
   <section class="game">
       <div class="game__container">
@@ -469,7 +425,7 @@ async function renderQuestion() {
   });
 
   if (counter === 6) {
-    console.log("3", counter);
+    // console.log("3", counter);
     counter = 0;
     renderResult();
   }
@@ -516,7 +472,7 @@ function renderResult() {
     ratingUpdateNumber = -7;
   }
   const currentRating = 123;
-  console.log(newWords);
+  // console.log(newWords);
 
   let newWordsForList;
   if (newWords.length === 0) {
@@ -616,7 +572,6 @@ function renderResult() {
   `;
   }
   document.querySelector(".game").remove();
-  console.log(111111111111111111111111111111111111111111, currentGame);
   if (currentGame === "rating") {
     function newLevelRating() {
       if (ratingUpdateNumber > 0) {
@@ -627,15 +582,14 @@ function renderResult() {
     }
     const newUserData = {
       nickname,
-      // rating: rating + ratingUpdateNumber,
       rating:
         rating + ratingUpdateNumber <= 0 ? 0 : rating + ratingUpdateNumber,
       levelRating: newLevelRating(),
       level: levelCaculate(),
     };
-    console.log("rating is: ", rating + ratingUpdateNumber);
-    console.log("ratingLevel is: ", newLevelRating());
-    console.log("new level is: ", levelCaculate());
+    // console.log("rating is: ", rating + ratingUpdateNumber);
+    // console.log("ratingLevel is: ", newLevelRating());
+    // console.log("new level is: ", levelCaculate());
 
     level = levelCaculate();
     rating = rating + ratingUpdateNumber <= 0 ? 0 : rating + ratingUpdateNumber;
@@ -644,7 +598,6 @@ function renderResult() {
     document.querySelector(".header__number").textContent = level;
     localStorage.setItem("guest", JSON.stringify(newUserData));
   }
-
   // Звідси можна забрати кількість правильних відповідей - correctAnswersNumber
   correctAnswersNumber = 0;
   bodyEl.insertAdjacentHTML("beforeend", markup);

@@ -1,5 +1,4 @@
 import "./index.html";
-// import Notiflix from "notiflix";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 
 const signInEl = document.querySelector("[data-sign-in]");
@@ -15,8 +14,6 @@ signInButton.forEach((item) => {
     Notify.failure("Registration is currently unavailable");
   });
 });
-
-// ------------------------------------------------------------------
 
 signUpButton.addEventListener("click", onSignUp);
 
